@@ -2,7 +2,6 @@ package de.god.springjdbcfun.domain.library;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.DisplayName;
@@ -12,10 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import de.god.springjdbcfun.domain.author.Author;
+import de.god.springjdbcfun.domain.author.AuthorRepo;
 
 @SpringBootTest
 class LibraryRepoTest
 {
+    @Autowired
+    private AuthorRepo authorRepo;
+
     @Autowired
     private LibraryRepo libraryRepo;
 
@@ -76,8 +79,10 @@ class LibraryRepoTest
         {
             // GIVEN
             final Author author = new AuthorFixture().create("Hans", "Peter", 3L);
-            final Book book1 = new BookFixture().create("First Book", author);
-            final Book book2 = new BookFixture().create("Second Book", author);
+            final Author savedAuthor = authorRepo.save(author);
+
+            final Book book1 = new BookFixture().create("First Book", savedAuthor);
+            final Book book2 = new BookFixture().create("Second Book", savedAuthor);
             final Library lib = new LibraryFixture().create("New Lib", Set.of(book1, book2));
 
             // WHEN
@@ -118,6 +123,7 @@ class LibraryRepoTest
             {
                 return Book.builder()
                         .title(pBook)
+                        .author(pAuthor)
                         .build();
             }
         }
