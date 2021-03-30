@@ -1,5 +1,6 @@
-package de.god.springjdbcfun.domain.library;
+package de.god.springjdbcfun.domain.author;
 
+import org.jmolecules.ddd.annotation.AggregateRoot;
 import org.jmolecules.ddd.annotation.Entity;
 import org.springframework.data.annotation.Id;
 
@@ -7,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Entity
+@AggregateRoot
 public class Author
 {
     @Id
